@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071d2b">
+  <meta name="description" content="E-Waste MasterGame: bilingual smart construction e-waste educational quiz.">
+  <title>E-Waste MasterGame | IUIC 2026</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="questions.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header container">
+    <a class="brand" href="#" id="homeLink" aria-label="E-Waste MasterGame home"><img class="brand-logo" src="logo.png" alt="" aria-hidden="true"><span>E-Waste <strong>MasterGame</strong></span></a>
+    <div class="header-actions"><span class="header-tag">IUIC 2026</span><button id="languageButton" class="button button-ghost" type="button">English</button></div>
+  </header>
+  <div class="audio-panel container" aria-label="Ambient Technology audio settings">
+    <button id="musicToggle" class="button button-ghost" type="button" aria-pressed="true">♫ Music: ON</button>
+    <button id="sfxToggle" class="button button-ghost" type="button" aria-pressed="true">🔊 SFX: ON</button>
+    <label class="audio-volume" for="volumeControl"><span id="volumeLabel">Volume</span><input id="volumeControl" type="range" min="0" max="100" value="35" aria-label="Music volume"><output id="volumeValue">35%</output></label>
+  </div>
+  <audio id="backgroundAudio" src="audio/background.mp3" loop preload="auto"></audio>
+  <audio id="correctAudio" src="audio/correct.wav" preload="auto"></audio>
+  <audio id="wrongAudio" src="audio/wrong.wav" preload="auto"></audio>
+  <audio id="applauseAudio" src="audio/applause.wav" preload="auto"></audio>
+  <audio id="victoryAudio" src="audio/victory.wav" preload="auto"></audio>
+  <main class="container">
+    <section id="homeScreen" class="screen hero" aria-labelledby="heroTitle">
+      <div class="hero-copy"><span class="eyebrow text-type-reveal" data-i18n="eyebrow">SMART CONSTRUCTION • SUSTAINABLE FUTURE</span>
+        <h1 id="heroTitle"><span class="text-float-in" data-i18n="heroLine1">Jadi Juara</span><br><span class="gradient-text text-gradient-flow">E-Waste Master!</span></h1>
+        <p class="lead text-rise-in" data-i18n="heroDescription">Uji pengetahuan anda tentang pengurusan sisa elektronik dalam projek pembinaan bangunan pintar melalui 3 tahap cabaran interaktif.</p>
+        <div class="hero-actions text-rise-in"><button id="startButton" class="button button-primary" type="button" data-i18n="start">Mula Bermain →</button><span class="small-note" data-i18n="heroNote">15 soalan • 3 tahap • 300 mata</span></div>
+      </div>
+      <div class="hero-visual"><img class="hero-logo" src="logo.png" alt="Logo rasmi E-Waste MasterGame"></div>
+    </section>
+    <section id="levelsScreen" class="screen hidden" aria-labelledby="levelsTitle">
+      <div class="section-heading"><span class="eyebrow" data-i18n="choosePath">YOUR LEARNING PATH</span><h2 id="levelsTitle" data-i18n="chooseLevel">Pilih Tahap Cabaran</h2><p data-i18n="levelDescription">Lengkapkan setiap tahap untuk membuka cabaran seterusnya.</p></div>
+      <div class="level-grid">
+        <button class="level-card" data-level="0" type="button"><span class="level-number">01</span><span class="level-icon">🌱</span><strong>Beginner</strong><span data-i18n="beginnerDesc">Asas e-waste dan pengenalan</span><small>5 × 10 <span data-i18n="points">mata</span></small><span class="level-status" id="status0"></span></button>
+        <button class="level-card" data-level="1" type="button"><span class="level-number">02</span><span class="level-icon">⚡</span><strong>Intermediate</strong><span data-i18n="intermediateDesc">Amalan dan cabaran pengurusan</span><small>5 × 20 <span data-i18n="points">mata</span></small><span class="level-status" id="status1"></span></button>
+        <button class="level-card" data-level="2" type="button"><span class="level-number">03</span><span class="level-icon">🏆</span><strong>Advanced</strong><span data-i18n="advancedDesc">Senario dan strategi penyelesaian</span><small>5 × 30 <span data-i18n="points">mata</span></small><span class="level-status" id="status2"></span></button>
+      </div>
+      <p class="centered muted" data-i18n="sequentialNote">Tahap dibuka secara berurutan. Anda boleh ulang tahap yang telah dibuka.</p>
+    </section>
+    <section id="missionScreen" class="screen hidden mission-brief" aria-labelledby="missionTitle">
+      <div class="mission-console"><span class="eyebrow" id="missionLabel">MISSION 01 / 03</span><div class="mission-symbol" id="missionSymbol" aria-hidden="true">🔎</div><h2 id="missionTitle"></h2><p id="missionBrief"></p><div class="mission-task"><strong id="missionTaskLabel"></strong><p id="missionTask"></p></div><div class="mission-meta"><span id="missionDifficulty"></span><span id="missionReward"></span></div><div class="mission-actions"><button id="missionBack" class="button button-secondary" type="button"></button><button id="missionLaunch" class="button button-primary" type="button"></button></div></div>
+    </section>
+    <section id="quizScreen" class="screen hidden" aria-labelledby="questionText">
+      <div class="mission-quiz-banner" id="missionQuizBanner"></div><div class="quiz-top"><div><span id="currentLevelLabel" class="eyebrow"></span><h2 data-i18n="quizHeading">Cabaran Pengetahuan</h2></div><div class="score-pill"><span data-i18n="score">Markah</span> <strong id="liveScore">0</strong></div></div>
+      <div class="progress-header"><span id="questionCounter"></span><span id="progressPercent">0%</span></div><div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      <div class="question-card"><span id="questionCategory" class="category-pill"></span><h3 id="questionText"></h3><div id="answerOptions" class="answer-options" role="group" aria-label="Answer choices"></div><div id="feedbackBox" class="feedback hidden" role="status" aria-live="polite"></div><div class="question-actions"><button id="nextButton" class="button button-primary hidden" type="button" data-i18n="nextQuestion">Soalan Seterusnya →</button></div></div>
+    </section>
+    <section id="sortingScreen" class="screen hidden" aria-labelledby="sortingTitle">
+      <div class="section-heading"><span class="eyebrow" id="sortingEyebrow">BONUS ACTIVITY</span><h2 id="sortingTitle">E-Waste Sorting Challenge</h2><p id="sortingIntro"></p></div>
+      <div class="sorting-layout"><div class="sorting-panel"><div class="sorting-progress" id="sortingProgress"></div><div class="sort-object" id="sortObject" draggable="true" tabindex="0" role="group" aria-label="Item to classify"><img class="sort-product-image" id="sortProductImage" src="images/sorting/cctv-camera.webp" alt="" draggable="false" width="360" height="300" loading="eager"><strong id="sortItemName"></strong><small id="sortItemDesc"></small></div><p class="muted sorting-instruction" id="sortInstruction"></p><div class="sort-bins" id="sortBins"></div><div class="sorting-feedback" id="sortingFeedback" role="status" aria-live="polite"></div><button id="sortingNext" class="button button-primary hidden" type="button"></button></div><div class="sorting-sidebar"><div class="sort-guide-icon">🤖</div><strong>E-Bot 2.0</strong><p id="sortGuideText"></p><p class="muted" id="sortDisclaimer"></p></div></div>
+    </section>
+    <section id="levelCompleteScreen" class="screen hidden completion" aria-labelledby="levelCompleteTitle"><div class="completion-icon">✓</div><p class="mission-complete-name" id="missionCompleteName"></p><span class="eyebrow" data-i18n="levelCompleteTag">LEVEL COMPLETE</span><h2 id="levelCompleteTitle"></h2><p id="levelCompleteSummary"></p><div class="result-score" id="levelCompleteScore"></div><button id="continueButton" class="button button-primary" type="button" data-i18n="continue">Teruskan →</button></section>
+    <section id="resultScreen" class="screen hidden completion" aria-labelledby="resultTitle"><div class="completion-icon">🏆</div><span class="eyebrow" data-i18n="challengeComplete">CHALLENGE COMPLETE</span><h2 id="resultTitle" data-i18n="resultTitle">Tahniah! Cabaran Selesai</h2><p id="resultRank"></p><div id="applauseBanner" class="applause-banner hidden" role="status" aria-live="polite"><span class="applause-emoji">👏 🎉 👏</span><strong id="applauseTitle"></strong><span id="applauseSubtitle"></span></div><div class="result-score"><strong id="finalScore">0</strong><span>/ 300</span></div><p id="finalStats"></p><div class="mission-results" id="missionResults"></div><div class="wow-results"><div class="wow-result-block"><h3 id="badgesHeading"></h3><div class="badge-grid" id="achievementBadges"></div></div><div class="wow-result-block"><h3 id="dashboardHeading"></h3><p id="dashboardDisclaimer" class="muted"></p><div class="dashboard-metrics" id="impactDashboard"></div></div></div><div class="result-actions"><button id="playAgainButton" class="button button-primary" type="button" data-i18n="playAgain">Main Semula</button><button id="shareButton" class="button button-secondary" type="button" data-i18n="share">Salin Keputusan</button></div><p id="shareMessage" class="muted" role="status"></p><div id="researchSection" class="research-section hidden"><p data-i18n="researchNote">Bantu penyelidikan pengurusan e-waste (penyertaan adalah sukarela dan tidak mempengaruhi markah).</p><a id="researchLink" class="button button-secondary" href="#" target="_blank" rel="noopener noreferrer" data-i18n="researchButton">Buka Soal Selidik FYP ↗</a></div></section>
+  </main>
+  <aside id="ebotWidget" class="ebot-widget" aria-label="E-Bot virtual guide">
+    <button id="ebotAvatar" class="ebot-avatar" type="button" aria-label="Show or hide E-Bot dialogue" aria-expanded="true"><img src="ebot.svg" alt="" aria-hidden="true"><span class="ebot-online"></span></button>
+    <div id="ebotBubble" class="ebot-bubble" role="status" aria-live="polite"><div class="ebot-heading"><strong>E-Bot <span class="ebot-spark">✦</span></strong><button id="ebotClose" class="ebot-close" type="button" aria-label="Close E-Bot dialogue">×</button></div><p id="ebotText" class="ebot-dialogue"></p><div class="ebot-actions"><button id="ebotHint" class="ebot-hint" type="button" hidden>💡 Hint</button><button id="ebotNext" class="ebot-next" type="button">▶</button></div></div>
+  </aside>
+  <footer class="site-footer container"><span>© 2026 E-Waste MasterGame · IUIC 2026</span><span data-i18n="footer">Learn • Play • Protect Our Planet</span></footer>
+</body>
+</html>
